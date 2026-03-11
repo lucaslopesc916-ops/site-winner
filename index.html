@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KV Winner — Assessoria de I.A. e Estratégia Comercial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,600;1,100&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root {
+  --deep: #1D241E;
+  --forest: #29422C;
+  --olive: #4C5E36;
+  --cream: #F5F5D0;
+  --rust: #8D3917;
+  --brown: #512A1A;
+  --cream-60: rgba(245,245,208,0.6);
+  --cream-15: rgba(245,245,208,0.15);
+  --cream-06: rgba(245,245,208,0.06);
+  --ease: cubic-bezier(0.16,1,0.3,1);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Josefin Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--deep);
+  color: var(--cream);
+  font-family: var(--sans);
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* GRAIN */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.038;
+  mix-blend-mode: overlay;
+}
+
+/* CURSOR */
+#cur {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: var(--cream);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%,-50%);
+  transition: width .3s var(--ease), height .3s var(--ease);
+  mix-blend-mode: difference;
+}
+#cur.big { width: 44px; height: 44px; }
+#cur-ring {
+  position: fixed;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(245,245,208,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+}
+
+/* REVEAL */
+.r { opacity: 0; transform: translateY(36px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.r.on { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: .1s; }
+.d2 { transition-delay: .2s; }
+.d3 { transition-delay: .3s; }
+.d4 { transition-delay: .4s; }
+.d5 { transition-delay: .5s; }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 1000;
+  padding: 28px 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all .5s var(--ease);
+}
+nav.s {
+  background: rgba(29,36,30,0.93);
+  backdrop-filter: blur(14px);
+  padding: 16px 64px;
+  border-bottom: 1px solid var(--cream-06);
+}
+.n-logo {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  color: var(--cream);
+  text-decoration: none;
+}
+.n-logo em { color: var(--rust); font-style: normal; }
+.n-links { display: flex; gap: 44px; list-style: none; }
+.n-links a {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--cream-60);
+  text-decoration: none;
+  transition: color .3s;
+}
+.n-links a:hover { color: var(--cream); }
+.n-cta {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--deep);
+  background: var(--cream);
+  padding: 11px 26px;
+  text-decoration: none;
+  transition: background .3s, color .3s;
+}
+.n-cta:hover { background: var(--rust); color: var(--cream); }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger span { width: 22px; height: 1px; background: var(--cream); display: block; }
+
+/* MOBILE MENU */
+.mob-nav {
+  position: fixed;
+  inset: 0;
+  background: var(--deep);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  transform: translateX(100%);
+  transition: transform .5s var(--ease);
+}
+.mob-nav.open { transform: translateX(0); }
+.mob-nav a {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 300;
+  color: var(--cream);
+  text-decoration: none;
+  letter-spacing: .02em;
+  transition: color .3s;
+}
+.mob-nav a:hover { color: var(--rust); }
+.mob-close {
+  position: absolute;
+  top: 28px; right: 28px;
+  background: none; border: none;
+  color: var(--cream);
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  background: var(--deep);
+  padding: 0 64px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.h-ghost {
+  position: absolute;
+  font-family: var(--serif);
+  font-size: clamp(160px, 22vw, 380px);
+  font-weight: 700;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(245,245,208,0.04);
+  line-height: 1;
+  right: -4%;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -.02em;
+}
+.h-frame {
+  position: absolute;
+  inset: 36px;
+  border: 1px solid var(--cream-06);
+  pointer-events: none;
+}
+.h-frame::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 50%;
+  transform: translateX(-50%);
+  width: 72px; height: 1px;
+  background: var(--cream-15);
+}
+.h-content { position: relative; z-index: 2; max-width: 880px; }
+.h-label {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 36px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.h-label::before { content: ''; width: 36px; height: 1px; background: var(--rust); }
+h1 {
+  font-family: var(--serif);
+  font-size: clamp(50px, 7.5vw, 112px);
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: -.02em;
+  color: var(--cream);
+  margin-bottom: 44px;
+}
+h1 em { font-style: italic; }
+h1 strong { font-weight: 600; }
+.h-sub {
+  font-size: 14px;
+  font-weight: 200;
+  letter-spacing: .07em;
+  line-height: 1.9;
+  color: var(--cream-60);
+  max-width: 500px;
+  margin-bottom: 56px;
+}
+.h-btns { display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
+.btn-p {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--rust);
+  padding: 18px 52px;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: all .4s var(--ease);
+}
+.btn-p::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--brown);
+  transform: translateX(-101%);
+  transition: transform .4s var(--ease);
+}
+.btn-p:hover::before { transform: translateX(0); }
+.btn-p span { position: relative; z-index: 1; }
+.btn-g {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--cream-60);
+  text-decoration: none;
+  border-bottom: 1px solid var(--cream-15);
+  padding-bottom: 4px;
+  transition: all .3s;
+}
+.btn-g:hover { color: var(--cream); border-bottom-color: var(--cream-60); }
+.h-scroll {
+  position: absolute;
+  bottom: 44px; left: 64px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 9px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--cream-60);
+}
+.h-line {
+  width: 1px; height: 56px;
+  background: var(--cream-15);
+  position: relative;
+  overflow: hidden;
+}
+.h-line::after {
+  content: '';
+  position: absolute;
+  top: -100%; left: 0;
+  width: 100%; height: 100%;
+  background: var(--cream-60);
+  animation: sd 2s ease-in-out infinite;
+}
+@keyframes sd { 0%{top:-100%} 100%{top:100%} }
+.h-year {
+  position: absolute;
+  bottom: 44px; right: 64px;
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: .22em;
+  color: rgba(245,245,208,.2);
+  writing-mode: vertical-rl;
+}
+
+/* ── MANIFESTO ── */
+#manifesto {
+  background: var(--cream);
+  color: var(--deep);
+  padding: 140px 64px;
+  overflow: hidden;
+}
+.sec-label {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  margin-bottom: 64px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.sec-label--dk { color: rgba(29,36,30,.5); }
+.sec-label--dk::after { content: ''; flex: 1; height: 1px; background: rgba(29,36,30,.12); }
+.sec-label--lt { color: var(--cream-60); }
+.sec-label--lt::after { content: ''; flex: 1; height: 1px; background: var(--cream-15); }
+.m-quote {
+  font-family: var(--serif);
+  font-size: clamp(34px, 5vw, 70px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.18;
+  letter-spacing: -.01em;
+  color: var(--deep);
+  max-width: 860px;
+  margin-bottom: 72px;
+}
+.m-quote strong { font-style: normal; font-weight: 600; }
+.m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: end; }
+.m-text {
+  font-size: 14px;
+  font-weight: 200;
+  letter-spacing: .06em;
+  line-height: 2;
+  color: rgba(29,36,30,.65);
+}
+.m-ghost {
+  font-family: var(--serif);
+  font-size: clamp(72px, 12vw, 160px);
+  font-weight: 300;
+  color: var(--deep);
+  opacity: .07;
+  line-height: 1;
+  text-align: right;
+}
+
+/* ── SERVIÇOS ── */
+#servicos {
+  background: var(--deep);
+  padding: 140px 64px;
+}
+.sec-title {
+  font-family: var(--serif);
+  font-size: clamp(46px, 6vw, 88px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  color: var(--cream);
+  margin-bottom: 72px;
+}
+.sec-title em { font-style: italic; }
+.sec-title--dk { color: var(--deep); }
+.s-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2px;
+}
+.s-card {
+  padding: 52px 40px;
+  border: 1px solid var(--cream-06);
+  position: relative;
+  overflow: hidden;
+  transition: border-color .4s;
+  cursor: pointer;
+}
+.s-card:nth-child(1) { grid-column: span 7; }
+.s-card:nth-child(2) { grid-column: span 5; }
+.s-card:nth-child(3) { grid-column: span 4; }
+.s-card:nth-child(4) { grid-column: span 4; }
+.s-card:nth-child(5) { grid-column: span 4; }
+.s-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--forest);
+  transform: translateY(101%);
+  transition: transform .5s var(--ease);
+}
+.s-card:hover { border-color: transparent; }
+.s-card:hover::before { transform: translateY(0); }
+.s-card > * { position: relative; z-index: 1; }
+.s-num {
+  font-family: var(--serif);
+  font-size: 12px;
+  color: var(--rust);
+  letter-spacing: .12em;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+.s-name {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 16px;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+.s-desc {
+  font-size: 13px;
+  font-weight: 200;
+  letter-spacing: .06em;
+  line-height: 1.9;
+  color: var(--cream-60);
+  margin-bottom: 32px;
+}
+.s-link {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--rust);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: gap .3s;
+}
+.s-link::after { content: '→'; font-size: 14px; letter-spacing: 0; }
+.s-card:hover .s-link { gap: 20px; }
+
+/* ── MÉTODO ── */
+#metodo {
+  background: var(--forest);
+  padding: 140px 64px;
+  overflow: hidden;
+}
+.m-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--cream-15);
+  margin-top: 72px;
+}
+.m-step {
+  background: var(--forest);
+  padding: 64px 56px;
+  position: relative;
+  transition: background .4s;
+}
+.m-step:hover { background: var(--olive); }
+.m-step-n {
+  font-family: var(--serif);
+  font-size: 88px;
+  font-weight: 300;
+  color: var(--cream);
+  opacity: .08;
+  line-height: 1;
+  margin-bottom: -16px;
+}
+.m-step-t {
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 20px;
+  letter-spacing: -.01em;
+}
+.m-step-d {
+  font-size: 13px;
+  font-weight: 200;
+  letter-spacing: .06em;
+  line-height: 1.9;
+  color: var(--cream-60);
+}
+.m-step-tag {
+  position: absolute;
+  top: 32px; right: 32px;
+  font-size: 9px;
+  font-weight: 300;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--rust);
+  border: 1px solid var(--rust);
+  padding: 6px 12px;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.m-step:hover .m-step-tag { opacity: 1; }
+
+/* ── NÚMEROS ── */
+#numeros {
+  background: var(--cream);
+  color: var(--deep);
+  padding: 140px 64px;
+}
+.n-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 56px;
+  margin-top: 72px;
+}
+.n-item { position: relative; padding-top: 40px; }
+.n-item::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 36px; height: 2px;
+  background: var(--rust);
+}
+.n-val {
+  font-family: var(--serif);
+  font-size: clamp(52px, 6.5vw, 92px);
+  font-weight: 300;
+  color: var(--deep);
+  line-height: 1;
+  margin-bottom: 16px;
+  letter-spacing: -.02em;
+}
+.n-pre { font-size: .5em; vertical-align: super; }
+.n-lbl {
+  font-size: 11px;
+  font-weight: 200;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(29,36,30,.48);
+  line-height: 1.7;
+}
+
+/* ── DEPOIMENTOS ── */
+#depoimentos {
+  background: var(--deep);
+  padding: 140px 64px;
+}
+.t-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 72px;
+}
+.t-card {
+  border: 1px solid var(--cream-06);
+  padding: 52px 44px;
+  transition: border-color .4s;
+}
+.t-card:hover { border-color: rgba(245,245,208,.28); }
+.t-mark {
+  font-family: var(--serif);
+  font-size: 88px;
+  font-weight: 700;
+  color: var(--rust);
+  line-height: .7;
+  margin-bottom: 32px;
+  opacity: .5;
+}
+.t-text {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.65;
+  margin-bottom: 40px;
+}
+.t-div { width: 36px; height: 1px; background: var(--rust); margin-bottom: 24px; }
+.t-author {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--cream-60);
+}
+.t-role {
+  font-size: 10px;
+  font-weight: 200;
+  letter-spacing: .1em;
+  color: rgba(245,245,208,.35);
+  margin-top: 5px;
+}
+
+/* ── CTA ── */
+#cta {
+  background: var(--brown);
+  padding: 160px 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-ghost {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: clamp(100px, 22vw, 320px);
+  font-weight: 700;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(245,245,208,.04);
+  pointer-events: none;
+  user-select: none;
+}
+.cta-inner { position: relative; z-index: 2; max-width: 780px; margin: 0 auto; }
+.cta-sub {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .36em;
+  text-transform: uppercase;
+  color: rgba(245,245,208,.45);
+  margin-bottom: 44px;
+}
+.cta-title {
+  font-family: var(--serif);
+  font-size: clamp(48px, 7.5vw, 102px);
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: -.02em;
+  color: var(--cream);
+  margin-bottom: 36px;
+}
+.cta-title em { font-style: italic; }
+.cta-desc {
+  font-size: 14px;
+  font-weight: 200;
+  letter-spacing: .07em;
+  line-height: 1.9;
+  color: rgba(245,245,208,.58);
+  max-width: 520px;
+  margin: 0 auto 56px;
+}
+.btn-cta {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--brown);
+  background: var(--cream);
+  padding: 22px 68px;
+  text-decoration: none;
+  transition: background .4s, color .4s;
+}
+.btn-cta:hover { background: var(--rust); color: var(--cream); }
+
+/* ── FOOTER ── */
+footer {
+  background: #101510;
+  padding: 80px 64px 40px;
+  border-top: 1px solid var(--cream-06);
+}
+.f-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 56px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid var(--cream-06);
+  margin-bottom: 40px;
+}
+.f-brand {
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 20px;
+}
+.f-brand em { color: var(--rust); font-style: normal; }
+.f-tag {
+  font-size: 12px;
+  font-weight: 200;
+  letter-spacing: .09em;
+  line-height: 1.9;
+  color: rgba(245,245,208,.35);
+  max-width: 240px;
+}
+.f-col-t {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 28px;
+}
+.f-links { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.f-links a {
+  font-size: 13px;
+  font-weight: 200;
+  letter-spacing: .06em;
+  color: rgba(245,245,208,.45);
+  text-decoration: none;
+  transition: color .3s;
+}
+.f-links a:hover { color: var(--cream); }
+.f-bot { display: flex; justify-content: space-between; align-items: center; }
+.f-copy {
+  font-size: 11px;
+  font-weight: 200;
+  letter-spacing: .1em;
+  color: rgba(245,245,208,.22);
+}
+.f-social { display: flex; gap: 24px; list-style: none; }
+.f-social a {
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(245,245,208,.35);
+  text-decoration: none;
+  transition: color .3s;
+}
+.f-social a:hover { color: var(--cream); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav,nav.s { padding: 20px 28px; }
+  .n-links,.n-cta { display: none; }
+  .hamburger { display: flex; }
+  #hero { padding: 120px 28px 90px; }
+  .h-frame,.h-ghost,.h-year { display: none; }
+  .h-scroll { left: 28px; }
+  #manifesto,#servicos,#metodo,#numeros,#depoimentos,#cta { padding: 96px 28px; }
+  .m-grid { grid-template-columns: 1fr; gap: 40px; }
+  .s-grid { grid-template-columns: 1fr; }
+  .s-card:nth-child(n) { grid-column: span 1; }
+  .m-steps { grid-template-columns: 1fr; }
+  .n-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .t-grid { grid-template-columns: 1fr; }
+  footer { padding: 60px 28px 36px; }
+  .f-top { grid-template-columns: 1fr; gap: 40px; }
+  .f-bot { flex-direction: column; gap: 20px; text-align: center; }
+}
+@media(max-width:480px){
+  .n-grid { grid-template-columns: 1fr; }
+  .h-btns { flex-direction: column; align-items: flex-start; gap: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- MOBILE NAV -->
+<div class="mob-nav" id="mob">
+  <button class="mob-close" id="mob-close">✕</button>
+  <a href="#manifesto">Sobre</a>
+  <a href="#servicos">Serviços</a>
+  <a href="#metodo">Método</a>
+  <a href="#numeros">Resultados</a>
+  <a href="#cta">Contato</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="n-logo">KV <em>Winner</em></a>
+  <ul class="n-links">
+    <li><a href="#manifesto">Sobre</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#metodo">Método</a></li>
+    <li><a href="#numeros">Resultados</a></li>
+  </ul>
+  <a href="#cta" class="n-cta">Solicitar Avaliação</a>
+  <div class="hamburger" id="ham"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-frame"></div>
+  <div class="h-ghost">WINNER</div>
+  <div class="h-content">
+    <div class="h-label r">Assessoria de I.A. & Estratégia Comercial</div>
+    <h1 class="r d1">
+      Seu negócio precisa de<br>
+      <strong>100 funcionários</strong><br>
+      <em>de I.A.</em>
+    </h1>
+    <p class="h-sub r d2">
+      A KV Winner combina Inteligência Artificial com estratégia comercial para transformar a forma como empresários de alto padrão crescem — sem trabalhar mais, trabalhando de forma mais inteligente.
+    </p>
+    <div class="h-btns r d3">
+      <a href="#cta" class="btn-p"><span>Quero Escalar com I.A.</span></a>
+      <a href="#servicos" class="btn-g">Ver Soluções</a>
+    </div>
+  </div>
+  <div class="h-scroll"><div class="h-line"></div><span>Scroll</span></div>
+  <div class="h-year">ESTD. 2026</div>
+</section>
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <div class="sec-label sec-label--dk r"><span>01 — Posicionamento</span></div>
+  <blockquote class="m-quote r d1">
+    A maioria das empresas ainda opera<br>
+    <strong>no século passado.</strong>
+  </blockquote>
+  <div class="m-grid">
+    <p class="m-text r d2">
+      Processos manuais. Atendimento lento. Decisões baseadas em intuição. Enquanto o mundo acelera, muitas empresas continuam presas em modelos que já deveriam ter sido substituídos.<br><br>
+      Na KV Winner, nós construímos o futuro do seu negócio com tecnologia de ponta, estratégia precisa e Inteligência Artificial como pilar central de crescimento. Não como ferramenta auxiliar — como vantagem competitiva permanente.
+    </p>
+    <div class="m-ghost r d3">I.A.</div>
+  </div>
+</section>
+
+<!-- SERVIÇOS -->
+<section id="servicos">
+  <div class="sec-label sec-label--lt r"><span>02 — Soluções</span></div>
+  <h2 class="sec-title r d1">Tecnologia que<br><em>vende por você.</em></h2>
+  <div class="s-grid">
+    <div class="s-card r">
+      <div class="s-num">01</div>
+      <div class="s-name">I.A. de Atendimento</div>
+      <p class="s-desc">Nunca mais perca um cliente por demora. Chatbots e assistentes inteligentes que atendem, qualificam e convertem 24 horas por dia — com a personalidade da sua marca e a precisão de um especialista.</p>
+      <a href="#cta" class="s-link">Saiba mais</a>
+    </div>
+    <div class="s-card r d1">
+      <div class="s-num">02</div>
+      <div class="s-name">Softwares 100% Personalizados</div>
+      <p class="s-desc">Dados que geram decisão. Sistemas desenvolvidos sob medida para o seu negócio, com dashboards e análises em tempo real que transformam informação em ação estratégica.</p>
+      <a href="#cta" class="s-link">Saiba mais</a>
+    </div>
+    <div class="s-card r d2">
+      <div class="s-num">03</div>
+      <div class="s-name">Plataformas Digitais</div>
+      <p class="s-desc">Sua presença digital à altura da sua empresa. Plataformas exclusivas construídas para performance e conversão máxima.</p>
+      <a href="#cta" class="s-link">Saiba mais</a>
+    </div>
+    <div class="s-card r d3">
+      <div class="s-num">04</div>
+      <div class="s-name">Mentoria em I.A.</div>
+      <p class="s-desc">Você na vanguarda. Formação estratégica para empresários que querem dominar as ferramentas de I.A. que já estão redefinindo mercados inteiros.</p>
+      <a href="#cta" class="s-link">Saiba mais</a>
+    </div>
+    <div class="s-card r d4">
+      <div class="s-num">05</div>
+      <div class="s-name">Estruturação Comercial</div>
+      <p class="s-desc">Funis que vendem enquanto você dorme. CRM, automações e estratégia comercial integrados com tecnologia de resultado comprovado.</p>
+      <a href="#cta" class="s-link">Saiba mais</a>
+    </div>
+  </div>
+</section>
+
+<!-- MÉTODO -->
+<section id="metodo">
+  <div class="sec-label sec-label--lt r"><span>03 — Processo</span></div>
+  <h2 class="sec-title r d1">Do diagnóstico<br><em>à escala.</em></h2>
+  <div class="m-steps">
+    <div class="m-step r">
+      <div class="m-step-tag">Etapa 01</div>
+      <div class="m-step-n">01</div>
+      <div class="m-step-t">Diagnóstico</div>
+      <p class="m-step-d">Mapeamos sua operação completa e identificamos onde a I.A. pode gerar mais resultado imediato. Sem suposições — apenas dados e estratégia.</p>
+    </div>
+    <div class="m-step r d1">
+      <div class="m-step-tag">Etapa 02</div>
+      <div class="m-step-n">02</div>
+      <div class="m-step-t">Estratégia</div>
+      <p class="m-step-d">Desenvolvemos um plano sob medida: quais tecnologias implementar, em qual ordem, com qual objetivo — tudo alinhado ao seu modelo de negócio.</p>
+    </div>
+    <div class="m-step r d2">
+      <div class="m-step-tag">Etapa 03</div>
+      <div class="m-step-n">03</div>
+      <div class="m-step-t">Implementação</div>
+      <p class="m-step-d">Executamos. Sem terceirizar, sem teoria. Nossa equipe constrói e entrega cada solução com rigor técnico e foco em resultado real e mensurável.</p>
+    </div>
+    <div class="m-step r d3">
+      <div class="m-step-tag">Etapa 04</div>
+      <div class="m-step-n">04</div>
+      <div class="m-step-t">Escala</div>
+      <p class="m-step-d">Monitoramos, ajustamos e expandimos. Crescimento não é um evento — é um processo contínuo. Nós permanecemos ao seu lado em cada etapa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- NÚMEROS -->
+<section id="numeros">
+  <div class="sec-label sec-label--dk r"><span>04 — Resultados</span></div>
+  <h2 class="sec-title sec-title--dk r d1">Números que<br><em>não mentem.</em></h2>
+  <div class="n-grid">
+    <div class="n-item r">
+      <div class="n-val"><span class="cnt" data-t="150">0</span>+</div>
+      <div class="n-lbl">Empresas<br>Atendidas</div>
+    </div>
+    <div class="n-item r d1">
+      <div class="n-val"><span class="cnt" data-t="40">0</span>%</div>
+      <div class="n-lbl">Crescimento Médio<br>em 6 Meses</div>
+    </div>
+    <div class="n-item r d2">
+      <div class="n-val"><span class="n-pre">R$</span><span class="cnt" data-t="50">0</span>M+</div>
+      <div class="n-lbl">Em Receita Gerada<br>para Clientes</div>
+    </div>
+    <div class="n-item r d3">
+      <div class="n-val"><span class="cnt" data-t="3">0</span></div>
+      <div class="n-lbl">Países<br>Atendidos</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section id="depoimentos">
+  <div class="sec-label sec-label--lt r"><span>05 — Depoimentos</span></div>
+  <h2 class="sec-title r d1">O que dizem<br><em>nossos clientes.</em></h2>
+  <div class="t-grid">
+    <div class="t-card r">
+      <div class="t-mark">"</div>
+      <p class="t-text">A KV Winner transformou completamente nosso atendimento. Hoje atendemos 3x mais clientes com a mesma equipe — e a qualidade só aumentou.</p>
+      <div class="t-div"></div>
+      <div class="t-author">Ricardo Monteiro</div>
+      <div class="t-role">CEO — E-commerce de Alto Volume</div>
+    </div>
+    <div class="t-card r d2">
+      <div class="t-mark">"</div>
+      <p class="t-text">Em 90 dias, o funil que eles construíram gerou R$280 mil em vendas que simplesmente não existiriam sem essa tecnologia. ROI imediato e real.</p>
+      <div class="t-div"></div>
+      <div class="t-author">Fernanda Salgado</div>
+      <div class="t-role">Diretora Comercial — Setor Imobiliário</div>
+    </div>
+    <div class="t-card r d4">
+      <div class="t-mark">"</div>
+      <p class="t-text">Finalmente entendi como usar I.A. de verdade dentro da minha empresa. A mentoria não ensinou ferramentas — ensinou a pensar diferente.</p>
+      <div class="t-div"></div>
+      <div class="t-author">André Paranhos</div>
+      <div class="t-role">Fundador — Rede de Clínicas</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-ghost">WIN</div>
+  <div class="cta-inner">
+    <div class="cta-sub r">Vagas Limitadas — Seleção Criteriosa</div>
+    <h2 class="cta-title r d1">Pronto para operar<br>no <em>próximo nível?</em></h2>
+    <p class="cta-desc r d2">Selecionamos um número limitado de empresários por ciclo. Se você chegou até aqui, muito provavelmente essa assessoria foi feita para você.</p>
+    <a href="#" class="btn-cta r d3">Solicitar Avaliação Gratuita</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-top">
+    <div>
+      <div class="f-brand">KV <em>Winner</em></div>
+      <p class="f-tag">Assessoria de Inteligência Artificial e Estratégia Comercial para empresários que recusam a mediocridade.</p>
+    </div>
+    <div>
+      <div class="f-col-t">Soluções</div>
+      <ul class="f-links">
+        <li><a href="#servicos">I.A. de Atendimento</a></li>
+        <li><a href="#servicos">Softwares</a></li>
+        <li><a href="#servicos">Plataformas Digitais</a></li>
+        <li><a href="#servicos">Mentoria</a></li>
+        <li><a href="#servicos">Estruturação Comercial</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="f-col-t">Empresa</div>
+      <ul class="f-links">
+        <li><a href="#manifesto">Sobre Nós</a></li>
+        <li><a href="#metodo">Nosso Método</a></li>
+        <li><a href="#numeros">Resultados</a></li>
+        <li><a href="#depoimentos">Depoimentos</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="f-col-t">Contato</div>
+      <ul class="f-links">
+        <li><a href="#cta">Solicitar Avaliação</a></li>
+        <li><a href="https://instagram.com/kayllev" target="_blank">@kayllev</a></li>
+        <li><a href="#">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="f-bot">
+    <div class="f-copy">© 2026 KV Winner. Todos os direitos reservados.</div>
+    <ul class="f-social">
+      <li><a href="https://instagram.com/kayllev" target="_blank">Instagram</a></li>
+      <li><a href="#">LinkedIn</a></li>
+      <li><a href="#">WhatsApp</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
+let cx=0,cy=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  cx=e.clientX; cy=e.clientY;
+  cur.style.left=cx+'px'; cur.style.top=cy+'px';
+});
+(function loop(){
+  rx+=(cx-rx)*.12; ry+=(cy-ry)*.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button,.s-card,.m-step,.t-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('big'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
+});
+
+// NAV
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('s',scrollY>60));
+
+// REVEAL
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); });
+},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.r').forEach(el=>ro.observe(el));
+
+// HERO IMMEDIATE REVEAL
+setTimeout(()=>document.querySelectorAll('#hero .r').forEach(el=>el.classList.add('on')),80);
+
+// COUNTERS
+function count(el){
+  const t=+el.dataset.t, dur=2000, s=performance.now();
+  (function upd(now){
+    const p=Math.min((now-s)/dur,1);
+    const e=1-Math.pow(1-p,4);
+    el.textContent=Math.round(e*t);
+    if(p<1) requestAnimationFrame(upd);
+  })(s);
+}
+const co=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){count(e.target);co.unobserve(e.target);} });
+},{threshold:.5});
+document.querySelectorAll('.cnt').forEach(el=>co.observe(el));
+
+// MOBILE NAV
+const mob=document.getElementById('mob');
+document.getElementById('ham').addEventListener('click',()=>mob.classList.add('open'));
+document.getElementById('mob-close').addEventListener('click',()=>mob.classList.remove('open'));
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mob.classList.remove('open')));
+</script>
+</body>
+</html>
