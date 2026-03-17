@@ -6,7 +6,7 @@
 <title>Winner.AI — Assessoria de I.A. e Estratégia Comercial</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
@@ -15,15 +15,15 @@
   --surface: #141A15;
   --card:    #1A231B;
   --border:  rgba(245,245,208,0.07);
-  --accent:  #6E9A3F;
+  --accent:  #8ED63C;
   --accent2: #A06B2A;
-  --glow:    rgba(110,154,63,0.18);
+  --glow:    rgba(142,214,60,0.22);
   --glow2:   rgba(160,107,42,0.14);
   --cream:   #F5F5D0;
   --muted:   rgba(245,245,208,0.45);
   --subtle:  rgba(245,245,208,0.12);
   --mono:    'JetBrains Mono', monospace;
-  --sans:    'Space Grotesk', sans-serif;
+  --sans:    'Plus Jakarta Sans', sans-serif;
   --ease:    cubic-bezier(0.16,1,0.3,1);
 }
 
@@ -34,6 +34,17 @@ body {
   color: var(--cream);
   font-family: var(--sans);
   overflow-x: hidden;
+}
+
+/* GRAIN TEXTURE */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.028;
 }
 
 /* GRID OVERLAY */
@@ -62,19 +73,27 @@ body::before {
 /* ── NAV ── */
 nav {
   position: fixed;
-  inset: 0 0 auto 0;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1000;
-  padding: 20px 48px;
+  padding: 8px 8px 8px 28px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 36px;
+  background: rgba(18,24,19,0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(245,245,208,0.1);
+  border-radius: 100px;
+  white-space: nowrap;
   transition: all .4s var(--ease);
-  border-bottom: 1px solid transparent;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
 }
 nav.s {
-  background: rgba(12,16,13,0.88);
-  backdrop-filter: blur(16px);
-  border-bottom-color: var(--border);
+  background: rgba(12,16,13,0.92);
+  border-color: rgba(245,245,208,0.14);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
 }
 .n-logo {
   font-family: var(--sans);
@@ -109,17 +128,18 @@ nav.s {
 .n-cta {
   font-family: var(--mono);
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: .08em;
+  font-weight: 600;
+  letter-spacing: .06em;
   color: var(--bg);
   background: var(--accent);
-  padding: 10px 22px;
-  border-radius: 4px;
+  padding: 12px 22px;
+  border-radius: 100px;
   text-decoration: none;
   transition: all .3s;
-  box-shadow: 0 0 20px var(--glow);
+  box-shadow: 0 0 16px var(--glow);
+  display: flex; align-items: center; gap: 6px;
 }
-.n-cta:hover { background: var(--cream); box-shadow: 0 0 28px rgba(245,245,208,0.2); }
+.n-cta:hover { background: var(--cream); box-shadow: 0 0 24px rgba(245,245,208,0.25); }
 .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
 .hamburger span { width: 22px; height: 1px; background: var(--cream); display: block; }
 
@@ -150,7 +170,7 @@ nav.s {
 /* ── HERO ── */
 #hero {
   min-height: 100vh;
-  padding: 0 48px;
+  padding: 0 48px 96px;
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
   z-index: 1;
@@ -170,7 +190,7 @@ nav.s {
   bottom: -100px; left: 10%;
   pointer-events: none;
 }
-.hero-content { position: relative; z-index: 2; max-width: 820px; padding-top: 80px; }
+.hero-content { position: relative; z-index: 2; max-width: 820px; padding-top: 120px; }
 .status-badge {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: var(--mono); font-size: 11px; font-weight: 400;
@@ -188,10 +208,10 @@ nav.s {
   animation: pulse 2s ease-in-out infinite;
 }
 h1 {
-  font-size: clamp(36px, 5.2vw, 76px);
-  font-weight: 600;
-  line-height: 1.08;
-  letter-spacing: -.03em;
+  font-size: clamp(28px, 4.2vw, 62px);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -.04em;
   color: var(--cream);
   margin-bottom: 28px;
 }
@@ -213,10 +233,10 @@ h1 .hl {
   font-family: var(--sans); font-size: 15px; font-weight: 600;
   color: var(--bg);
   background: var(--accent);
-  padding: 16px 36px; border-radius: 6px;
+  padding: 16px 36px; border-radius: 100px;
   text-decoration: none;
   transition: all .35s var(--ease);
-  box-shadow: 0 0 28px var(--glow);
+  box-shadow: 0 0 32px var(--glow);
   position: relative; overflow: hidden;
 }
 .btn-primary::before {
@@ -229,6 +249,16 @@ h1 .hl {
 .btn-primary:hover::before { transform: scaleX(1); }
 .btn-primary:hover { box-shadow: 0 0 40px rgba(245,245,208,0.2); }
 .btn-primary span, .btn-primary svg { position: relative; z-index: 1; }
+.btn-icon-circle {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(0,0,0,0.18);
+  display: inline-flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+  transition: transform .35s var(--ease);
+  flex-shrink: 0;
+}
+.btn-primary:hover .btn-icon-circle { transform: translate(2px, -2px); }
+.btn-whatsapp:hover .btn-icon-circle { transform: translate(2px, -2px); }
 .btn-secondary {
   font-family: var(--mono); font-size: 12px; font-weight: 400;
   color: var(--muted); text-decoration: none; letter-spacing: .06em;
@@ -238,7 +268,7 @@ h1 .hl {
 .btn-secondary:hover { color: var(--cream); border-bottom-color: var(--muted); }
 .hero-stats {
   display: flex; justify-content: center; gap: 48px; margin-top: 64px;
-  padding-top: 40px; border-top: 1px solid var(--border);
+  padding: 40px 24px 0; border-top: 1px solid var(--border);
 }
 .h-stat-val {
   font-size: 36px; font-weight: 700;
@@ -260,11 +290,14 @@ h1 .hl {
   border-bottom: 1px solid var(--border);
 }
 .sec-tag {
-  font-family: var(--mono); font-size: 11px; font-weight: 400;
-  color: var(--accent); letter-spacing: .12em; text-transform: uppercase;
-  margin-bottom: 28px; display: flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  color: var(--accent); letter-spacing: .18em; text-transform: uppercase;
+  margin-bottom: 28px; display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(142,214,60,0.07);
+  border: 1px solid rgba(142,214,60,0.18);
+  padding: 6px 14px; border-radius: 100px;
 }
-.sec-tag::before { content: '//'; opacity: .5; }
+.sec-tag::before { content: ''; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 6px var(--accent); animation: pulse 2s ease-in-out infinite; }
 .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
 .sobre-title {
   font-size: clamp(36px, 4.5vw, 64px);
@@ -295,8 +328,8 @@ h1 .hl {
 .sec-header { margin-bottom: 56px; }
 .sec-title {
   font-size: clamp(38px, 5vw, 72px);
-  font-weight: 600; line-height: 1.05;
-  letter-spacing: -.03em; color: var(--cream);
+  font-weight: 700; line-height: 1.02;
+  letter-spacing: -.04em; color: var(--cream);
   margin-top: 16px;
 }
 .sec-title em { font-style: italic; color: var(--accent); }
@@ -309,11 +342,12 @@ h1 .hl {
 .bento-card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 36px 32px;
   position: relative; overflow: hidden;
-  transition: border-color .4s, transform .4s var(--ease);
+  transition: border-color .5s var(--ease), transform .5s var(--ease), box-shadow .5s var(--ease);
   cursor: default;
+  box-shadow: inset 0 1px 0 rgba(245,245,208,0.06), 0 1px 3px rgba(0,0,0,0.3);
 }
 .bento-card::before {
   content: '';
@@ -321,7 +355,7 @@ h1 .hl {
   background: radial-gradient(circle at var(--mx,50%) var(--my,50%), var(--glow) 0%, transparent 65%);
   opacity: 0; transition: opacity .4s;
 }
-.bento-card:hover { border-color: rgba(110,154,63,0.3); transform: translateY(-2px); }
+.bento-card:hover { border-color: rgba(142,214,60,0.25); transform: translateY(-3px); box-shadow: inset 0 1px 0 rgba(245,245,208,0.1), 0 12px 40px rgba(0,0,0,0.4); }
 .bento-card:hover::before { opacity: 1; }
 .bento-card:nth-child(1) { grid-column: span 7; }
 .bento-card:nth-child(2) { grid-column: span 5; }
@@ -334,8 +368,10 @@ h1 .hl {
   margin-bottom: 32px; opacity: .7;
 }
 .card-icon {
-  font-size: 28px; margin-bottom: 20px;
-  display: block; line-height: 1;
+  width: 26px; height: 26px;
+  margin-bottom: 20px;
+  display: block;
+  color: var(--accent);
 }
 .card-title {
   font-size: 22px; font-weight: 600;
@@ -373,15 +409,16 @@ h1 .hl {
   background: var(--card);
   padding: 44px 32px;
   position: relative;
-  transition: background .4s;
+  transition: background .5s var(--ease), box-shadow .5s var(--ease);
+  box-shadow: inset 0 1px 0 rgba(245,245,208,0.05);
 }
-.step:hover { background: var(--surface); }
+.step:hover { background: var(--surface); box-shadow: inset 0 1px 0 rgba(245,245,208,0.08); }
 .step-n {
   font-family: var(--mono); font-size: 11px; font-weight: 400;
   color: var(--accent); letter-spacing: .1em;
   margin-bottom: 48px; opacity: .7;
 }
-.step-icon { font-size: 24px; margin-bottom: 20px; display: block; }
+.step-icon { width: 22px; height: 22px; margin-bottom: 20px; display: block; color: var(--accent); }
 .step-title {
   font-size: 20px; font-weight: 600;
   color: var(--cream); letter-spacing: -.02em;
@@ -453,10 +490,11 @@ h1 .hl {
 .t-card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 12px; padding: 40px 32px;
-  transition: border-color .4s, transform .4s var(--ease);
+  border-radius: 16px; padding: 40px 32px;
+  transition: border-color .5s var(--ease), transform .5s var(--ease), box-shadow .5s var(--ease);
+  box-shadow: inset 0 1px 0 rgba(245,245,208,0.06), 0 1px 3px rgba(0,0,0,0.3);
 }
-.t-card:hover { border-color: rgba(110,154,63,0.3); transform: translateY(-3px); }
+.t-card:hover { border-color: rgba(142,214,60,0.25); transform: translateY(-4px); box-shadow: inset 0 1px 0 rgba(245,245,208,0.1), 0 16px 48px rgba(0,0,0,0.4); }
 .t-stars { color: var(--accent); font-size: 14px; letter-spacing: 3px; margin-bottom: 24px; }
 .t-text {
   font-size: 15px; font-weight: 300;
@@ -527,10 +565,10 @@ h1 .hl {
   font-family: var(--sans); font-size: 16px; font-weight: 600;
   color: var(--bg);
   background: var(--accent);
-  padding: 20px 48px; border-radius: 8px;
+  padding: 20px 48px; border-radius: 100px;
   text-decoration: none;
   transition: all .35s var(--ease);
-  box-shadow: 0 0 40px var(--glow);
+  box-shadow: 0 0 48px var(--glow);
   position: relative; overflow: hidden;
 }
 .btn-whatsapp::before {
@@ -601,7 +639,15 @@ footer {
 
 /* ── RESPONSIVE ── */
 @media(max-width:960px){
-  nav, nav.s { padding: 18px 24px; }
+  nav, nav.s {
+    top: 16px;
+    left: 16px; right: 16px;
+    transform: none;
+    border-radius: 16px;
+    padding: 14px 16px;
+    gap: 0;
+    justify-content: space-between;
+  }
   .n-links, .n-cta { display: none; }
   .hamburger { display: flex; }
   #hero { padding: 80px 24px 72px; }
@@ -618,7 +664,7 @@ footer {
   .f-bot { flex-direction: column; gap: 18px; text-align: center; }
 }
 @media(max-width:520px){
-  .hero-btns { flex-direction: column; align-items: flex-start; }
+  .hero-btns { flex-direction: column; align-items: center; }
   .steps-grid { grid-template-columns: 1fr; }
   .nums-grid { grid-template-columns: 1fr 1fr; }
   .hero-stats { flex-direction: column; gap: 24px; }
@@ -646,7 +692,7 @@ footer {
     <li><a href="#metodo">método</a></li>
     <li><a href="#numeros">resultados</a></li>
   </ul>
-  <a href="#cta" class="n-cta">falar no whatsapp</a>
+  <a href="#cta" class="n-cta">falar no whatsapp <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
   <div class="hamburger" id="ham"><span></span><span></span><span></span></div>
 </nav>
 
@@ -660,9 +706,7 @@ footer {
       Assessoria de I.A. & Estratégia Comercial
     </div>
     <h1 class="r d1">
-      Seu time trabalhando <span class="hl">24h.</span><br>
-      Implementamos I.A na sua operação<br>
-      em <span class="hl">14 dias</span> — sem contratar ninguém.
+      Implementamos <span class="hl">I.A.</span> em toda a sua operação em <span class="hl">14 dias.</span> Do atendimento aos processos internos.
     </h1>
     <p class="hero-sub r d2">
       Implementamos I.A e automações que fazem o trabalho repetitivo da sua operação para você escalar sem contratar, sem depender de processo manual, sem deixar dinheiro na mesa.
@@ -670,7 +714,7 @@ footer {
     <div class="hero-btns r d3">
       <a href="https://wa.me/553497285143" class="btn-primary" target="_blank">
         <span>Quero escalar com I.A.</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <span class="btn-icon-circle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></span>
       </a>
       <a href="#servicos" class="btn-secondary">ver soluções →</a>
     </div>
@@ -684,7 +728,7 @@ footer {
         <div class="h-stat-lbl">crescimento médio/6m</div>
       </div>
       <div>
-        <div class="h-stat-val">R$50<span>M+</span></div>
+        <div class="h-stat-val">R$10<span>M+</span></div>
         <div class="h-stat-lbl">gerados para clientes</div>
       </div>
     </div>
@@ -725,35 +769,35 @@ footer {
     <div class="bento-card r">
       <div class="card-tag">24h / 7 dias</div>
       <div class="card-num">01</div>
-      <span class="card-icon">🤖</span>
+      <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
       <div class="card-title">I.A. de Atendimento</div>
       <p class="card-desc">Chatbots e assistentes inteligentes que atendem, qualificam e convertem leads 24 horas por dia — com a personalidade da sua marca e a precisão de um especialista. Nunca mais perca um cliente por demora no atendimento.</p>
     </div>
     <div class="bento-card r d1">
       <div class="card-tag">sob medida</div>
       <div class="card-num">02</div>
-      <span class="card-icon">📊</span>
+      <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></span>
       <div class="card-title">Softwares Personalizados</div>
       <p class="card-desc">Dashboards e sistemas desenvolvidos exclusivamente para o seu modelo de negócio. Dados em tempo real que transformam informação em decisão estratégica.</p>
     </div>
     <div class="bento-card r d2">
       <div class="card-tag">alta conversão</div>
       <div class="card-num">03</div>
-      <span class="card-icon">🌐</span>
+      <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
       <div class="card-title">Plataformas Digitais</div>
       <p class="card-desc">Sua presença digital à altura da sua empresa. Plataformas exclusivas construídas para performance máxima e conversão real.</p>
     </div>
     <div class="bento-card r d3">
       <div class="card-tag">empresários</div>
       <div class="card-num">04</div>
-      <span class="card-icon">🧠</span>
+      <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg></span>
       <div class="card-title">Mentoria em I.A.</div>
       <p class="card-desc">Formação estratégica para empresários que querem dominar as ferramentas de I.A. que já estão redefinindo mercados inteiros. Você na vanguarda.</p>
     </div>
     <div class="bento-card r d4">
       <div class="card-tag">resultado</div>
       <div class="card-num">05</div>
-      <span class="card-icon">⚡</span>
+      <span class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
       <div class="card-title">Estruturação Comercial</div>
       <p class="card-desc">Funis que vendem enquanto você dorme. CRM, automações e estratégia comercial integrados com tecnologia de resultado comprovado.</p>
     </div>
@@ -769,28 +813,28 @@ footer {
   <div class="steps-grid r d2">
     <div class="step">
       <div class="step-n">01</div>
-      <span class="step-icon">🔍</span>
+      <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
       <div class="step-title">Diagnóstico</div>
       <p class="step-desc">Mapeamos sua operação completa e identificamos onde a I.A. gera mais resultado imediato. Sem suposições — apenas dados e estratégia.</p>
       <div class="step-line"></div>
     </div>
     <div class="step">
       <div class="step-n">02</div>
-      <span class="step-icon">🎯</span>
+      <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
       <div class="step-title">Estratégia</div>
       <p class="step-desc">Desenvolvemos um plano sob medida: quais tecnologias implementar, em qual ordem, com qual objetivo — tudo alinhado ao seu negócio.</p>
       <div class="step-line"></div>
     </div>
     <div class="step">
       <div class="step-n">03</div>
-      <span class="step-icon">⚙️</span>
+      <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
       <div class="step-title">Implementação</div>
       <p class="step-desc">Executamos. Sem terceirizar, sem teoria. Nossa equipe constrói e entrega cada solução com rigor técnico e foco em resultado real e mensurável.</p>
       <div class="step-line"></div>
     </div>
     <div class="step">
       <div class="step-n">04</div>
-      <span class="step-icon">📈</span>
+      <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>
       <div class="step-title">Escala</div>
       <p class="step-desc">Monitoramos, ajustamos e expandimos. Crescimento não é um evento — é um processo contínuo. Permanecemos ao seu lado em cada etapa.</p>
       <div class="step-line"></div>
@@ -815,7 +859,7 @@ footer {
       <div class="num-lbl">Crescimento Médio<br>em 6 Meses</div>
     </div>
     <div class="num-item r d2">
-      <div class="num-val">R$<span class="cnt" data-t="50">0</span><span>M+</span></div>
+      <div class="num-val">R$<span class="cnt" data-t="10">0</span><span>M+</span></div>
       <div class="num-lbl">Receita Gerada<br>para Clientes</div>
     </div>
     <div class="num-item r d3">
@@ -863,7 +907,7 @@ footer {
   <div class="cta-inner">
     <div class="cta-badge r">
       <span class="s-dot"></span>
-      vagas limitadas — seleção criteriosa
+      vagas limitadas · seleção criteriosa
     </div>
     <h2 class="cta-title r d1">
       Pronto para operar<br>no <span class="hl">próximo nível?</span>
@@ -872,8 +916,8 @@ footer {
       Selecionamos um número limitado de empresários por ciclo. Se você chegou até aqui, muito provavelmente essa assessoria foi feita para você.
     </p>
     <a href="https://wa.me/553497285143" class="btn-whatsapp r d3" target="_blank">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       <span>Falar no WhatsApp</span>
+      <span class="btn-icon-circle"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></span>
     </a>
   </div>
 </section>
@@ -908,15 +952,15 @@ footer {
       <div class="f-col-t">Contato</div>
       <ul class="f-links">
         <li><a href="https://wa.me/553497285143" target="_blank">WhatsApp</a></li>
-        <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+        <li><a href="https://www.instagram.com/olucaslopesc/" target="_blank">Instagram</a></li>
         <li><a href="#cta">Solicitar Avaliação</a></li>
       </ul>
     </div>
   </div>
   <div class="f-bot">
-    <div class="f-copy">// © 2026 Winner.AI — todos os direitos reservados</div>
+    <div class="f-copy">© 2026 Winner.AI · todos os direitos reservados</div>
     <ul class="f-social">
-      <li><a href="https://instagram.com" target="_blank">instagram</a></li>
+      <li><a href="https://www.instagram.com/olucaslopesc/" target="_blank">instagram</a></li>
       <li><a href="https://wa.me/553497285143" target="_blank">whatsapp</a></li>
       <li><a href="#">linkedin</a></li>
     </ul>
