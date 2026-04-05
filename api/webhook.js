@@ -1,0 +1,67 @@
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(200).send("Webhook ativo!");
+  }
+
+  const WPP_API_URL  = "https://smv2-8.stevo.chat";
+  const WPP_INSTANCE = "lucas-gh1";
+  const WPP_API_KEY  = "1769036519293fRvOnazfAzj4wi2q";
+  const LINK_GRUPO   = "https://chat.whatsapp.com/Ewy5shNUznm6f4L9sIvDVP";
+
+  try {
+    const payload = req.body;
+    console.log("Evento recebido:", payload?.order_status);
+
+    if (!payload || payload.order_status !== "paid") {
+      return res.status(200).send("Ignorado");
+    }
+
+    const nome = payload.Customer?.full_name || "";
+    const telefone = payload.Customer?.mobile || "";
+
+    if (!telefone) {
+      return res.status(200).send("Sem telefone");
+    }
+
+    const primeiro = nome ? nome.split(" ")[0] : "amigo(a)";
+    const mensagem = `Fala, ${primeiro}! 👋
+
+Seja bem-vindo ao workshop!
+
+Lembrando: será dia 06/04 às 19h
+
+Esse workshop ficará gravado, mas é super importante que você participe online, que é sua oportunidade de tirar suas dúvidas 100% comigo
+
+O acesso ao grupo é por esse link
+
+É só entrar lá 👇
+${LINK_GRUPO}`;
+
+    const numero = telefone.replace(/\D/g, "");
+
+    const response = await fetch(
+      `${WPP_API_URL}/send/text`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: WPP_API_KEY,
+        },
+        body: JSON.stringify({
+          number: numero,
+          text: mensagem,
+          delay: 1500,
+          linkPreview: false,
+        }),
+      }
+    );
+
+    const data = await response.text();
+    console.log(`WPP [${response.status}]: ${data}`);
+
+    return res.status(200).send("OK");
+  } catch (err) {
+    console.error("Erro:", err.message);
+    return res.status(200).send("Erro");
+  }
+}
