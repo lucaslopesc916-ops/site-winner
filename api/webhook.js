@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     const primeiro = nome ? nome.split(" ")[0] : "amigo(a)";
     const mensagem = `Fala, ${primeiro}! 👋
 
-Seja bem-vindo ao workshop!
+Seja muito bem-vindo(a) ao workshop!
 
 Lembrando: será dia 06/04 às 19h
 
