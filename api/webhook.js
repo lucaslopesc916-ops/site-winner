@@ -4,22 +4,25 @@ export default async function handler(req, res) {
   }
 
   const WPP_API_URL  = "https://smv2-8.stevo.chat";
-  const WPP_INSTANCE = "lucas-gh1";
   const WPP_API_KEY  = "1769036519293fRvOnazfAzj4wi2q";
   const LINK_GRUPO   = "https://chat.whatsapp.com/Ewy5shNUznm6f4L9sIvDVP";
 
   try {
     const payload = req.body;
-    console.log("Evento recebido:", payload?.order_status);
+    const order = payload?.order || payload;
+    const status = order.order_status || payload.order_status;
 
-    if (!payload || payload.order_status !== "paid") {
+    console.log("Evento recebido:", status);
+
+    if (status !== "paid") {
       return res.status(200).send("Ignorado");
     }
 
-    const nome = payload.Customer?.full_name || "";
-    const telefone = payload.Customer?.mobile || "";
+    const nome = order.Customer?.full_name || "";
+    const telefone = order.Customer?.mobile || "";
 
     if (!telefone) {
+      console.log("Sem telefone no payload");
       return res.status(200).send("Sem telefone");
     }
 
