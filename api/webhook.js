@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   const WPP_API_URL  = "https://smv2-8.stevo.chat";
   const WPP_API_KEY  = "1769036519293fRvOnazfAzj4wi2q";
-  const LINK_GRUPO   = "https://chat.whatsapp.com/Ewy5shNUznm6f4L9sIvDVP";
+  const LINK_GRUPO   = "https://chat.whatsapp.com/COO82ANNOApAIsS19EZ5BE";
 
   try {
     const payload = req.body;
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
 
 Seja muito bem-vindo(a) ao workshop!
 
-Lembrando: será dia 06/04 às 19h
+Lembrando: será dia 13/04 às 19h
 
 Esse workshop ficará gravado, mas é super importante que você participe online, que é sua oportunidade de tirar suas dúvidas 100% comigo
 
